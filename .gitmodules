@@ -1,0 +1,6 @@
+[submodule "yayahud"]
+	path = yayahud
+	url = github.com:amrios/yayahud.git
+[submodule "3rdparty/yayahud"]
+	path = 3rdparty/yayahud
+	url = github.com:amrios/yayahud.git
