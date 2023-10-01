@@ -8,6 +8,7 @@
 
 INSTALL_DIR=./tf
 PLATFORM=linux
+WORKDIR=$(pwd)
 
 TF_LAUNCH_OPS="-novid -nojow -nosteamcontroller -nohltv -particles 1 -precachefontchars -nostartupsound -console"
 TF_LAUNCH_OPS_WIN="-noquicktime"
@@ -17,13 +18,15 @@ TF_SENSITIVTY_RATIO="0.5"
 
 # Detect if using WSL.
 if [[ $(lscpu | grep -E "Windows|Microsoft") ]]
-	printf "Detected WSL"
-	PLATFORM=windows
+then
+	echo "Detected WSL"
+	platform=WINDOWS
 fi
 
 
 if [ $(du $INSTALL_DIR | wc -l) != 1 ]
-	printf "ERROR: Install environment ($INSTALL_DIR) not clean"
+then
+	echo "ERROR: Install environment ($INSTALL_DIR) not clean"
 	exit 2
 fi
 
@@ -46,8 +49,13 @@ MC_VIEWMODEL_URL="https://api.mastercomfig.com/download/latest/download/masterco
 MC=($MC_MEDIUM_URL $MC_NULLCANCEL_URL $MC_FLATMOUSE_URL $MC_VIEWMODEL_URL)
 
 if [ $PLATFORM == "linux" ]
+then
 	MC+=($MC_OPENGL_URL)
+	TF_LAUNCH_OPS="$TF_LAUNCH_OPS $TF_LAUNCH_OPS_LIN"
+else
+	TF_LAUNCH_OPS="$TF_LAUNCH_OPS $TF_LAUNCH_OPS_WIN"
 fi
+	
 
 for url in "${MC[@]}"
 do
@@ -55,6 +63,20 @@ do
 done
 
 # 1b. Yayahud
-cp ../../3rdparty/yayahud ./
+cp -r $WORKDIR/3rdparty/yayahud ./
+
+# 1c. Hitsound
+mkdir -p hitsound/sound/ui
+cp $WORKDIR/hitsound/hitsound.wav hitsound/sound/ui
+
+cd $WORKDIR
+
+# Step 2: Create cfgs
+cd $INSTALL_DIR/cfg
+
+cp -r $WORKDIR/cfg/* ./
+
+echo "Your dotfiles are at $INSTALL_DIR"
+echo "Set Launch Options on Steam to: $TF_LAUNCH_OPS"
 
 

@@ -1,5 +1,5 @@
 # Personal TF2 Configuration
-This is my personal TF2 configuration. It is supposed to be ran via a Bash script for setup, however you can follow the steps in the README for a manual setup. The script expects that you are running in Linux or Windows via WSL2.
+This is an WIP effort to automate the deployment of my TF2 configuration (dotfiles) to a simple bash script. The script expects that you are running in Linux or Windows via WSL2.
 
 ## Mastercomfig
 Use the constants Mastercomfig links to retrieve the latest plugins.
